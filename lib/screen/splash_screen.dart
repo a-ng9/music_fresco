@@ -19,6 +19,7 @@ class SplashScreen extends StatelessWidget {
               width: 100,
               height: 100,
               color: Styles.getDarkBlueColor(),
+              child: Text('Logo', style: TextStyle(color: Colors.white)),
             ),
             SizedBox(height: 50),
             //////sign IN button
