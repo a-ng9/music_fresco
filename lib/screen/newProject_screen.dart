@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_fresco/screen/chat_screen.dart';
 import 'package:music_fresco/utils/styles.dart';
 
 class NewProject extends StatefulWidget {
@@ -13,7 +14,6 @@ class _NewProjectState extends State<NewProject> {
       appBar: AppBar(
         // title: Text("Project's Name"),
         actions: <Widget>[IconButton(icon: Icon(Icons.menu), onPressed: () {})],
-        flexibleSpace: FlexibleSpaceBar(),
       ),
       body: Center(
         child: Column(
@@ -45,6 +45,11 @@ class _NewProjectState extends State<NewProject> {
                 ],
               ),
             ),
+            Container(
+              color: Colors.blue,
+              height: 300,
+              width: 300,
+            ),
           ],
         ),
       ),
@@ -62,7 +67,10 @@ class _NewProjectState extends State<NewProject> {
               IconButton(
                 iconSize: 30,
                 icon: Icon(Icons.chat, color: Styles.getlightPurpleColor()),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ChatScreen()));
+                },
               ),
               IconButton(
                 iconSize: 30,
@@ -137,9 +145,7 @@ class _DropDownState extends State<DropDown> {
                 dropdownValue = newValue;
               });
             },
-            hint: Text(
-              'Choose Sheet',
-            ),
+            hint: Text('Choose Sheet'),
           ),
         ),
       ),

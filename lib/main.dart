@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:music_fresco/screen/splash_screen.dart';
 import 'package:music_fresco/utils/styles.dart';
@@ -7,8 +8,20 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

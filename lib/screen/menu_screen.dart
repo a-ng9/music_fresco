@@ -4,54 +4,59 @@ import 'package:music_fresco/screen/myProjects_screen.dart';
 import 'package:music_fresco/screen/newProjectLabel_screen.dart';
 import 'package:music_fresco/screen/visualizer_screen.dart';
 import 'package:music_fresco/utils/styles.dart';
+import 'package:music_fresco/widgets/customAppBar.dart';
 
 class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Styles.getDarkBlueColor(),
-        actions: <Widget>[
-          IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.format_align_justify)),
-        ],
-        // flexibleSpace: Text('Hi Jane,'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(251.0),
+        child: MyAppBar(),
       ),
-      body: Center(
-        child: SizedBox(
-          height: 500,
-          width: MediaQuery.of(context).size.width * 0.65,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              MenuButton(
-                  color: Styles.getlightPurpleColor(),
-                  label: 'New Project',
-                  icon: Icon(Icons.add, color: Colors.white, size: 35),
-                  path: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => LabelProject()));
-                  }),
-              MenuButton(
-                  color: Styles.getDarkBlueColor(),
-                  label: 'My Projects',
-                  icon: Icon(Icons.queue_music, color: Colors.white, size: 35),
-                  path: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MyProjects()));
-                  }),
-              MenuButton(
-                  color: Styles.getNavyBlueColor(),
-                  label: 'Visualiser',
-                  icon:
-                      Icon(Icons.remove_red_eye, color: Colors.white, size: 35),
-                  path: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Visualizer()));
-                  })
-            ],
+      body: SingleChildScrollView(
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: SizedBox(
+            height: 400,
+            width: MediaQuery.of(context).size.width * 0.65,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                MenuButton(
+                    color: Styles.getlightPurpleColor(),
+                    label: 'New Project',
+                    icon: Icon(Icons.add, color: Colors.white, size: 35),
+                    path: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LabelProject()));
+                    }),
+                MenuButton(
+                    color: Styles.getDarkBlueColor(),
+                    label: 'My Projects',
+                    icon:
+                        Icon(Icons.queue_music, color: Colors.white, size: 35),
+                    path: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyProjects()));
+                    }),
+                MenuButton(
+                    color: Styles.getNavyBlueColor(),
+                    label: 'Visualiser',
+                    icon: Icon(Icons.remove_red_eye,
+                        color: Colors.white, size: 35),
+                    path: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Visualizer()));
+                    })
+              ],
+            ),
           ),
         ),
       ),
