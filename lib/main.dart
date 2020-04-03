@@ -17,6 +17,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    /////setting orientation of the app portrait()
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -29,6 +30,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Styles.getDarkBlueMaterialColor,
       ),
+
       home: FirstScreen(),
       // home: MyHomePage(title: 'Flutter Demo Home Page'),
     );

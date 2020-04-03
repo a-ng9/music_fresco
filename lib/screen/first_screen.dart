@@ -7,28 +7,43 @@ import 'package:music_fresco/utils/styles.dart';
 class FirstScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    /////make status bar (in the phone) change to black color
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.black, //or set color with: Color(0xFF0000FF)
+      statusBarColor: Colors.black,
     ));
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-              width: 100,
-              height: 100,
-              color: Styles.getDarkBlueColor(),
-              child: Text('Logo', style: TextStyle(color: Colors.white)),
+            //////logo
+            ///hero widget acts as an animation. works together with 1st and 2nd screen
+            Hero(
+              tag: 'logo',
+              child: Container(
+                width: 100,
+                height: 100,
+                color: Styles.getDarkBlueColor(),
+                // child: Text('Logo', style: TextStyle(color: Colors.white)),
+              ),
             ),
-            SizedBox(height: 50),
-            //////sign IN button
+            SizedBox(height: 40),
+            //////SIGN-IN button
             ButtonTheme(
               minWidth: 200,
               child: FlatButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignInScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SignInScreen(),
+                      )
+
+                      /////////One way to delay animation hero widget, but does not delay other widgets
+                      // PageRouteBuilder(
+                      // pageBuilder: (_, __, ___) => SignInScreen(),
+                      // transitionDuration: Duration(seconds: 1),)
+                      );
                 },
                 color: Styles.getDarkBlueColor(),
                 shape: RoundedRectangleBorder(

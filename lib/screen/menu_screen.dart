@@ -10,8 +10,10 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      /////preferredsize is mandatory if appbar() widget is not used (pfs is mainly used for height)
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(251.0),
+        /////myappbar is a custom appbar
         child: MyAppBar(),
       ),
       body: SingleChildScrollView(
