@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:music_fresco/logic/ProjectName_logic.dart';
 import 'package:music_fresco/screen/chat_screen.dart';
 import 'package:music_fresco/utils/styles.dart';
+import 'package:music_fresco/widgets/customAppBar.dart';
 
 class NewProject extends StatefulWidget {
   @override
@@ -12,43 +14,59 @@ class _NewProjectState extends State<NewProject> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // title: Text("Project's Name"),
+        elevation: 0,
         actions: <Widget>[IconButton(icon: Icon(Icons.menu), onPressed: () {})],
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text('Project 1'),
-              ],
-            ),
-            Material(
-              color: Styles.getDarkBlueColor(),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  DropDown(),
-                  Ink(
-                      decoration: const ShapeDecoration(
-                        color: Colors.white,
-                        shape: CircleBorder(),
+            ClipPath(
+              clipper: MyClipper(),
+              child: Container(
+                width: double.infinity,
+                height: 180,
+                color: Styles.getDarkBlueColor(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5, left: 40),
+                      child: Text(
+                        '${projectName.title}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20),
                       ),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.play_arrow,
-                        ),
-                        color: Styles.getDarkBlueColor(),
-                        iconSize: 30,
-                        onPressed: () {},
-                      )),
-                ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40),
+                      child: Text(
+                        "Last saved...",
+                        style: TextStyle(
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w300,
+                            fontSize: 13),
+                      ),
+                    ),
+                    // SizedBox(height: 25),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[DropDown(), PlayButton()],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             Container(
               color: Colors.blue,
               height: 300,
               width: 300,
+              child: Center(child: Text('Music notes')),
             ),
           ],
         ),
@@ -96,7 +114,9 @@ class _NewProjectState extends State<NewProject> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          print('Add button pressed');
+        },
         child: Icon(Icons.add, size: 40),
       ),
     );
@@ -115,12 +135,14 @@ class _DropDownState extends State<DropDown> {
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: Container(
-        width: 175,
+        height: 40,
+        // width: 175,
         decoration: BoxDecoration(
           color: Color.fromRGBO(255, 255, 255, .35),
           borderRadius: BorderRadius.all(Radius.circular(15)),
         ),
         child: ButtonTheme(
+          buttonColor: Color.fromRGBO(255, 255, 255, .35),
           alignedDropdown: true,
           child: DropdownButton<String>(
             value: dropdownValue,
@@ -149,6 +171,20 @@ class _DropDownState extends State<DropDown> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class PlayButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      onPressed: () {
+        print("play button pressed");
+      },
+      child: Icon(Icons.play_arrow, color: Styles.getDarkBlueColor()),
+      fillColor: Colors.white,
+      shape: CircleBorder(),
     );
   }
 }
