@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:music_fresco/screen/splash_screen.dart';
+import 'package:music_fresco/screen/first_screen.dart';
 import 'package:music_fresco/utils/styles.dart';
 
 void main() {
@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Styles.getDarkBlueMaterialColor,
       ),
-      home: SplashScreen(),
+      home: FirstScreen(),
       // home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

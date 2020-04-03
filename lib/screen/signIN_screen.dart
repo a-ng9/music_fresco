@@ -74,6 +74,11 @@ class SignInScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10)),
             ),
           ),
+          IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              })
         ],
       ),
     ));

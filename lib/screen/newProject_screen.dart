@@ -25,7 +25,7 @@ class _NewProjectState extends State<NewProject> {
               clipper: MyClipper(),
               child: Container(
                 width: double.infinity,
-                height: 180,
+                height: 160,
                 color: Styles.getDarkBlueColor(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +50,6 @@ class _NewProjectState extends State<NewProject> {
                             fontSize: 13),
                       ),
                     ),
-                    // SizedBox(height: 25),
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: Row(
@@ -123,6 +122,8 @@ class _NewProjectState extends State<NewProject> {
   }
 }
 
+/////class for curved container (appbar)
+//dropdown button in curved container
 class DropDown extends StatefulWidget {
   @override
   _DropDownState createState() => _DropDownState();
@@ -136,38 +137,41 @@ class _DropDownState extends State<DropDown> {
     return DropdownButtonHideUnderline(
       child: Container(
         height: 40,
-        // width: 175,
         decoration: BoxDecoration(
           color: Color.fromRGBO(255, 255, 255, .35),
           borderRadius: BorderRadius.all(Radius.circular(15)),
         ),
-        child: ButtonTheme(
-          buttonColor: Color.fromRGBO(255, 255, 255, .35),
-          alignedDropdown: true,
-          child: DropdownButton<String>(
-            value: dropdownValue,
-            icon: Icon(Icons.keyboard_arrow_down, color: Colors.white),
-            iconSize: 25,
-            elevation: 16,
-            style: TextStyle(color: Colors.white, fontSize: 15),
-            items: <String>['Lead Sheet', 'ID #1', 'ID #2']
-                .map<DropdownMenuItem<String>>(
-              (String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                );
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            canvasColor: Styles.getlightPurpleColor(),
+          ),
+          child: ButtonTheme(
+            buttonColor: Color.fromRGBO(255, 255, 255, .35),
+            alignedDropdown: true,
+            child: DropdownButton<String>(
+              value: dropdownValue,
+              icon: Icon(Icons.keyboard_arrow_down, color: Colors.white),
+              iconSize: 25,
+              elevation: 16,
+              style: TextStyle(color: Colors.white, fontSize: 15),
+              items: <String>['Lead Sheet', 'ID #1', 'ID #2']
+                  .map<DropdownMenuItem<String>>(
+                (String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Container(
+                      child: Text(value, style: TextStyle(color: Colors.white)),
+                    ),
+                  );
+                },
+              ).toList(),
+              onChanged: (String newValue) {
+                setState(() {
+                  dropdownValue = newValue;
+                });
               },
-            ).toList(),
-            onChanged: (String newValue) {
-              setState(() {
-                dropdownValue = newValue;
-              });
-            },
-            hint: Text('Choose Sheet'),
+              hint: Text('Choose Sheet'),
+            ),
           ),
         ),
       ),
@@ -175,6 +179,7 @@ class _DropDownState extends State<DropDown> {
   }
 }
 
+//circle play button in curved container
 class PlayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

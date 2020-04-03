@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:music_fresco/screen/signIN_screen.dart';
 import 'package:music_fresco/utils/styles.dart';
 
-class SplashScreen extends StatelessWidget {
+class FirstScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
