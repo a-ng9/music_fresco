@@ -6,11 +6,31 @@ class ChatScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Chat screen'),
-          ],
+        child: Container(
+          margin: const EdgeInsets.only(left: 100, right: 100),
+          child: DraggableScrollableSheet(
+            initialChildSize: 0.3,
+            minChildSize: 0.1,
+            maxChildSize: .5,
+            builder: (context, scrollController) {
+              return Container(
+                color: Colors.red,
+                child: ListView(
+                  shrinkWrap: false,
+                  physics: ClampingScrollPhysics(),
+                  controller: scrollController,
+                  children: <Widget>[
+                    Center(child: Text("ID #1 Editor")),
+                    Container(
+                      width: 50,
+                      height: 50,
+                      color: Colors.blue,
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
