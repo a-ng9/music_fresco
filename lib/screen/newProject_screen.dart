@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:music_fresco/logic/ProjectName_logic.dart';
 import 'package:music_fresco/screen/chat_screen.dart';
+import 'package:music_fresco/screen/speechRecg_screen.dart';
 import 'package:music_fresco/utils/styles.dart';
 import 'package:music_fresco/widgets/customAppBar.dart';
 
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+//import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class NewProject extends StatefulWidget {
   @override
@@ -74,6 +75,15 @@ class _NewProjectState extends State<NewProject> {
                   child: Center(
                     child: Text('Music notes'),
                   ),
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SpeechRecgScreen()));
+                  },
+                  child: Text('Speech Recognition'),
                 ),
               ],
             ),
