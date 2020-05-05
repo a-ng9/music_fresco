@@ -17,7 +17,7 @@ class MyAppBar extends StatelessWidget {
           clipper: MyClipper(),
           child: Container(
             //width: 100,
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width,
             height: 195,
             color: Styles.getDarkBlueColor(),
             child: Padding(

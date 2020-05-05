@@ -71,21 +71,31 @@ class _SpeechRecgScreenState extends State<SpeechRecgScreen> {
                 SizedBox(width: 10),
                 CustomButton(
                   pressed: () {
-                    print('Mic Button pressed');
+                    //The below IF function will activate the mic and listen for audio
                     if (_isAvailable && !_isListening) {
                       _speechRecognition
                           .listen(locale: "en_US")
                           .then((result) => ('$result'));
                     }
+                    /*The below IF function will 'stop' listening when the mic is available (pressed a 2nd time)*/
+                    // else if (_isListening) {
+                    //   _speechRecognition.stop().then(
+                    //       (result) => setState(() => _isListening = result));
+                    // }
                   },
-                  icon: Icon(Icons.mic, size: 40),
+                  icon: Icon(
+                    (_isAvailable && !_isListening) ? Icons.mic : Icons.pause,
+                    size: 40,
+                    color: (_isAvailable && !_isListening)
+                        ? Colors.black
+                        : Colors.white,
+                  ),
                   color: Colors.blue,
                   size: 60,
                 ),
                 SizedBox(width: 10),
                 CustomButton(
                   pressed: () {
-                    print('pause Button pressed');
                     if (_isListening) {
                       _speechRecognition.stop().then(
                           (result) => setState(() => _isListening = result));
@@ -94,7 +104,7 @@ class _SpeechRecgScreenState extends State<SpeechRecgScreen> {
                   icon: Icon(Icons.pause),
                   color: Colors.blue,
                   size: 40,
-                )
+                ),
               ],
             ),
             SizedBox(height: 5),
