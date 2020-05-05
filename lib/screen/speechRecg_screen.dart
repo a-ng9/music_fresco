@@ -78,10 +78,10 @@ class _SpeechRecgScreenState extends State<SpeechRecgScreen> {
                           .then((result) => ('$result'));
                     }
                     /*The below IF function will 'stop' listening when the mic is available (pressed a 2nd time)*/
-                    // else if (_isListening) {
-                    //   _speechRecognition.stop().then(
-                    //       (result) => setState(() => _isListening = result));
-                    // }
+                    else if (_isListening) {
+                      _speechRecognition.stop().then(
+                          (result) => setState(() => _isListening = result));
+                    }
                   },
                   icon: Icon(
                     (_isAvailable && !_isListening) ? Icons.mic : Icons.pause,
