@@ -1,21 +1,21 @@
 PODS:
   - Flutter (1.0.0)
-  - speech_recognition (0.3.0):
+  - speech_to_text (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - speech_recognition (from `.symlinks/plugins/speech_recognition/ios`)
+  - speech_to_text (from `.symlinks/plugins/speech_to_text/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  speech_recognition:
-    :path: ".symlinks/plugins/speech_recognition/ios"
+  speech_to_text:
+    :path: ".symlinks/plugins/speech_to_text/ios"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  speech_recognition: b5319aace06c3633c0547de44899f6e0bf8b2168
+  speech_to_text: 41b068d5f61fe3abe7e2bb0296250cf996e45417
 
 PODFILE CHECKSUM: c34e2287a9ccaa606aeceab922830efb9a6ff69a
 

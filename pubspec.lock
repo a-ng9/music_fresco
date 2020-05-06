@@ -60,6 +60,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
   matcher:
     dependency: transitive
     description:
@@ -100,13 +107,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.0"
-  speech_recognition:
+  speech_to_text:
     dependency: "direct main"
     description:
-      name: speech_recognition
+      name: speech_to_text
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0+1"
+    version: "2.1.0"
   stack_trace:
     dependency: transitive
     description:

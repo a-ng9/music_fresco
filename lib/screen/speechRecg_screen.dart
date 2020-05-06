@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-//import 'package:music_fresco/utils/styles.dart';
-import 'package:speech_recognition/speech_recognition.dart';
+import 'package:music_fresco/utils/styles.dart';
+import 'package:speech_to_text/speech_recognition_error.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'dart:async';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class SpeechRecgScreen extends StatefulWidget {
   @override
@@ -8,122 +11,158 @@ class SpeechRecgScreen extends StatefulWidget {
 }
 
 class _SpeechRecgScreenState extends State<SpeechRecgScreen> {
-  SpeechRecognition _speechRecognition;
-  bool _isAvailable = false;
-  bool _isListening = false;
-
-  String resultText = "";
+  bool _hasSpeech = false;
+  double level = 0.0;
+  String lastWords = "";
+  String lastError = "";
+  String lastStatus = "";
+  String _currentLocaleId = "en_UK";
+  final SpeechToText speech = SpeechToText();
 
   @override
   void initState() {
     super.initState();
-    initSpeechRecogniser();
+    initSpeechState();
   }
 
-  void initSpeechRecogniser() {
-    _speechRecognition = SpeechRecognition();
+  Future<void> initSpeechState() async {
+    bool hasSpeech = await speech.initialize(
+        onError: errorListener, onStatus: statusListener);
 
-    _speechRecognition.setAvailabilityHandler(
-        (bool result) => setState(() => _isAvailable = result));
-
-    _speechRecognition.setRecognitionStartedHandler(
-        () => setState(() => _isListening = true));
-
-    _speechRecognition.setRecognitionResultHandler(
-        (String speech) => setState(() => resultText = speech));
-
-    _speechRecognition.setRecognitionCompleteHandler(
-        () => setState(() => _isListening = false));
-
-    _speechRecognition
-        .activate()
-        .then((result) => setState(() => _isAvailable = result));
+    setState(() {
+      _hasSpeech = hasSpeech;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Speech Recognition"),
+        title: const Text('Speech Recognition'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomButton(
-                  pressed: () {
-                    print('stop Button pressed');
-                    if (_isListening) {
-                      _speechRecognition.cancel().then((result) => setState(() {
-                            _isListening = result;
-                            resultText = "";
-                          }));
-                    }
-                  },
-                  icon: Icon(Icons.stop),
-                  color: Colors.blue,
-                  size: 40,
-                ),
-                SizedBox(width: 10),
-                CustomButton(
-                  pressed: () {
-                    //The below IF function will activate the mic and listen for audio
-                    if (_isAvailable && !_isListening) {
-                      _speechRecognition
-                          .listen(locale: "en_US")
-                          .then((result) => ('$result'));
-                    }
-                    /*The below IF function will 'stop' listening when the mic is available (pressed a 2nd time)*/
-                    else if (_isListening) {
-                      _speechRecognition.stop().then(
-                          (result) => setState(() => _isListening = result));
-                    }
-                  },
-                  icon: Icon(
-                    (_isAvailable && !_isListening) ? Icons.mic : Icons.pause,
-                    size: 40,
-                    color: (_isAvailable && !_isListening)
-                        ? Colors.black
-                        : Colors.white,
+      body: Column(children: [
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Center(
+                  child: Text(
+                    lastWords,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20),
                   ),
-                  color: Colors.blue,
-                  size: 60,
                 ),
-                SizedBox(width: 10),
-                CustomButton(
-                  pressed: () {
-                    if (_isListening) {
-                      _speechRecognition.stop().then(
-                          (result) => setState(() => _isListening = result));
-                    }
-                  },
-                  icon: Icon(Icons.pause),
-                  color: Colors.blue,
-                  size: 40,
-                ),
-              ],
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(width: 45),
+            CustomButton(
+              pressed: () {
+                if (!_hasSpeech || !speech.isListening) {
+                  startListening();
+                  print('mic started');
+                } else if (speech.isListening) {
+                  stopListening();
+                  print('mic stopped');
+                }
+              },
+              icon: (!_hasSpeech || speech.isListening)
+                  ? Icon(Icons.pause, color: Colors.white)
+                  : Icon(Icons.mic, color: Colors.white),
+              color: (!_hasSpeech || speech.isListening)
+                  ? Colors.red
+                  : Styles.getDarkBlueColor(),
+              size: 60,
             ),
-            SizedBox(height: 5),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(),
-              ),
-              width: MediaQuery.of(context).size.width * .8,
-              // color: Colors.red,
-              child: Text(
-                resultText,
-                style: TextStyle(fontSize: 24),
-              ),
-              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
-            )
+            SizedBox(width: 5),
+            CustomButton(
+              pressed: cancelListening,
+              icon: Icon(Icons.stop, color: Colors.white),
+              color: Colors.red,
+              size: 40,
+            ),
           ],
         ),
-      ),
+        SizedBox(height: 10),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          color: Theme.of(context).backgroundColor,
+          child: Center(
+            child: speech.isListening
+                ? Text(
+                    "Listening...",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.green),
+                  )
+                : Text(
+                    'Not listening',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.red),
+                  ),
+          ),
+        ),
+      ]),
     );
+  }
+
+  void startListening() {
+    // lastWords = "";
+    // lastError = "";
+    speech.listen(
+      onResult: resultListener,
+      listenFor: Duration(seconds: 10),
+      localeId: _currentLocaleId,
+      onSoundLevelChange: soundLevelListener,
+      //cancelOnError: true,
+      //partialResults: true
+    );
+    setState(() {});
+  }
+
+  void stopListening() {
+    speech.stop();
+    setState(() {
+      level = 0.0;
+    });
+  }
+
+  void cancelListening() {
+    speech.cancel();
+    lastWords = "";
+    setState(() {
+      level = 0.0;
+    });
+  }
+
+  void resultListener(SpeechRecognitionResult result) {
+    setState(() {
+      lastWords = "${result.recognizedWords}";
+    });
+  }
+
+  void soundLevelListener(double level) {
+    setState(() {
+      this.level = level;
+    });
+  }
+
+  void errorListener(SpeechRecognitionError error) {
+    setState(() {
+      lastError = "${error.errorMsg} - ${error.permanent}";
+    });
+  }
+
+  void statusListener(String status) {
+    setState(() {
+      lastStatus = "$status";
+    });
   }
 }
 
