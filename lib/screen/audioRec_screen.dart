@@ -57,7 +57,9 @@ class _AudioRecState extends State<AudioRec> {
                         const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                     child: Center(
                       child: Text(
-                        "Audio Recording duration: ${_recording.duration.toString()}",
+                        _recording.duration != null
+                            ? "Audio Recording duration: ${_recording.duration.toString()}"
+                            : "Audio Recording duration:",
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 20),
                       ),
@@ -76,7 +78,7 @@ class _AudioRecState extends State<AudioRec> {
                       print('button pressed');
                     } else if (_isRecording) {
                       _stop();
-                      //print('mic stopped');
+                      print('button pressed to stop mic');
                     }
                   },
                   icon: _isRecording
@@ -95,11 +97,11 @@ class _AudioRecState extends State<AudioRec> {
     try {
       if (await AudioRecorder.hasPermissions) {
         AudioRecorder.start(audioOutputFormat: AudioOutputFormat.AAC);
-        io.Directory appDocDirectory = await getApplicationDocumentsDirectory();
+        bool isRecording = await AudioRecorder.isRecording;
 
+        io.Directory appDocDirectory = await getApplicationDocumentsDirectory();
         print('path: $appDocDirectory');
 
-        bool isRecording = await AudioRecorder.isRecording;
         setState(() {
           _recording = Recording(duration: Duration(), path: "");
           _isRecording = isRecording;
@@ -115,10 +117,14 @@ class _AudioRecState extends State<AudioRec> {
 
   _stop() async {
     var recording = await AudioRecorder.stop();
+
     print("Stop recording: ${recording.path}");
+
     bool isRecording = await AudioRecorder.isRecording;
+
     File file = widget.localFileSystem.file(recording.path);
     print("  File length: ${await file.length()}");
+
     setState(() {
       _recording = recording;
       _isRecording = isRecording;
