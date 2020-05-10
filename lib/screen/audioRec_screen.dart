@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:io' as io;
 
 import 'package:audio_recorder/audio_recorder.dart';
 import 'package:file/file.dart';
@@ -38,17 +38,17 @@ class AudioRec extends StatefulWidget {
 }
 
 class _AudioRecState extends State<AudioRec> {
-  //int _counter = 0;
+  int _counter = 0;
 
   Recording _recording = Recording();
   bool _isRecording = false;
   TextEditingController _controller = TextEditingController();
 
-  // void incrementCounter() {
-  //   setState(() {
-  //     _counter++;
-  //   });
-  // }
+  void incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,18 +71,19 @@ class _AudioRecState extends State<AudioRec> {
                       ),
                     ),
                   ),
-                  //Text('$_counter'),
+                  Text('$_counter'),
+                  SizedBox(height: 15),
                   // TextField(
                   //   controller: _controller,
                   //   decoration: InputDecoration(
                   //     hintText: 'Enter a custom path',
                   //   ),
                   // ),
-                  Center(
-                      child: Text(
-                    "File path of the record: ${_recording.path}",
-                    textAlign: TextAlign.center,
-                  )),
+                  // Center(
+                  //     child: Text(
+                  //   "File path of the record: ${_recording.path}",
+                  //   textAlign: TextAlign.center,
+                  // )),
                 ],
               ),
             ),
@@ -93,8 +94,8 @@ class _AudioRecState extends State<AudioRec> {
                   pressed: () {
                     if (!_isRecording) {
                       _start();
-                      //incrementCounter();
-                      //print('mic started');
+                      incrementCounter();
+                      print('button pressed');
                     } else if (_isRecording) {
                       _stop();
                       //print('mic stopped');
@@ -115,9 +116,16 @@ class _AudioRecState extends State<AudioRec> {
   _start() async {
     try {
       if (await AudioRecorder.hasPermissions) {
-        if (_isRecording == true) {}
         print('mic on');
+        String controller = 'Audio $_counter';
+        String path;
 
+        io.Directory appDocDirectory = await getApplicationDocumentsDirectory();
+        path = appDocDirectory.path + '/';
+
+        print("Start recording: $path");
+        await AudioRecorder.start(
+            path: path, audioOutputFormat: AudioOutputFormat.AAC);
         await AudioRecorder.start(audioOutputFormat: AudioOutputFormat.AAC);
 
         bool isRecording = await AudioRecorder.isRecording;
@@ -134,6 +142,38 @@ class _AudioRecState extends State<AudioRec> {
       print(e);
     }
   }
+
+  // _start() async {
+  //   try {
+  //     if (await AudioRecorder.hasPermissions) {
+  //       String controller = 'Audio $_counter';
+
+  //       if (controller != null && controller != "") {
+  //         String path = controller;
+
+  //         io.Directory appDocDirectory =
+  //             await getApplicationDocumentsDirectory();
+  //         path = appDocDirectory.path + '/' + controller;
+
+  //         print("Start recording: $path");
+  //         await AudioRecorder.start(
+  //             path: path, audioOutputFormat: AudioOutputFormat.AAC);
+  //       } else {
+  //         await AudioRecorder.start();
+  //       }
+  //       bool isRecording = await AudioRecorder.isRecording;
+  //       setState(() {
+  //         _recording = Recording(duration: Duration(), path: "");
+  //         _isRecording = isRecording;
+  //       });
+  //     } else {
+  //       Scaffold.of(context).showSnackBar(
+  //           SnackBar(content: Text("You must accept permissions")));
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   _stop() async {
     Recording recording = await AudioRecorder.stop();
