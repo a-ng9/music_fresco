@@ -24,79 +24,83 @@ class _NewProjectState extends State<NewProject> {
         children: <Widget>[
           /////main body (all widgets behind the purple sheet)
           Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  ClipPath(
-                    clipper: MyClipper(),
-                    child: Container(
-                      width: double.infinity,
-                      height: 160,
-                      color: Styles.getDarkBlueColor(),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 5, left: 40),
-                            child: Text(
-                              '${projectName.title}',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 20),
-                            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                ClipPath(
+                  clipper: MyClipper(),
+                  child: Container(
+                    width: double.infinity,
+                    height: 160,
+                    color: Styles.getDarkBlueColor(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5, left: 40),
+                          child: Text(
+                            '${projectName.title}',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 40),
-                            child: Text(
-                              "Last saved...",
-                              style: TextStyle(
-                                  color: Colors.white70,
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 13),
-                            ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 40),
+                          child: Text(
+                            "Last saved...",
+                            style: TextStyle(
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 13),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[DropDown(), PlayButton()],
-                            ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[DropDown(), PlayButton()],
                           ),
-                        ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        color: Colors.blue,
+                        height: 300,
+                        width: 300,
+                        child: Center(
+                          child: Text('Music notes'),
+                        ),
                       ),
-                    ),
+                      RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SpeechRecgScreen()));
+                        },
+                        child: Text('Speech Recognition'),
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AudioRecScreen()));
+                        },
+                        child: Text('Audio recording'),
+                      ),
+                      SizedBox(height: 70)
+                    ],
                   ),
-                  Container(
-                    color: Colors.blue,
-                    height: 300,
-                    width: 300,
-                    child: Center(
-                      child: Text('Music notes'),
-                    ),
-                  ),
-                  RaisedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SpeechRecgScreen()));
-                    },
-                    child: Text('Speech Recognition'),
-                  ),
-                  RaisedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AudioRecScreen()));
-                    },
-                    child: Text('Audio recording'),
-                  ),
-                  SizedBox(height: 70)
-                ],
-              ),
+                ),
+              ],
             ),
           ),
 

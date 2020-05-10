@@ -38,17 +38,9 @@ class AudioRec extends StatefulWidget {
 }
 
 class _AudioRecState extends State<AudioRec> {
-  int _counter = 0;
-
   Recording _recording = Recording();
   bool _isRecording = false;
   TextEditingController _controller = TextEditingController();
-
-  void incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,19 +63,6 @@ class _AudioRecState extends State<AudioRec> {
                       ),
                     ),
                   ),
-                  Text('$_counter'),
-                  SizedBox(height: 15),
-                  // TextField(
-                  //   controller: _controller,
-                  //   decoration: InputDecoration(
-                  //     hintText: 'Enter a custom path',
-                  //   ),
-                  // ),
-                  // Center(
-                  //     child: Text(
-                  //   "File path of the record: ${_recording.path}",
-                  //   textAlign: TextAlign.center,
-                  // )),
                 ],
               ),
             ),
@@ -94,7 +73,6 @@ class _AudioRecState extends State<AudioRec> {
                   pressed: () {
                     if (!_isRecording) {
                       _start();
-                      incrementCounter();
                       print('button pressed');
                     } else if (_isRecording) {
                       _stop();
@@ -116,75 +94,28 @@ class _AudioRecState extends State<AudioRec> {
   _start() async {
     try {
       if (await AudioRecorder.hasPermissions) {
-        print('mic on');
-        String controller = 'Audio $_counter';
-        String path;
-
+        AudioRecorder.start(audioOutputFormat: AudioOutputFormat.AAC);
         io.Directory appDocDirectory = await getApplicationDocumentsDirectory();
-        path = appDocDirectory.path + '/';
 
-        print("Start recording: $path");
-        await AudioRecorder.start(
-            path: path, audioOutputFormat: AudioOutputFormat.AAC);
-        await AudioRecorder.start(audioOutputFormat: AudioOutputFormat.AAC);
+        print('path: $appDocDirectory');
 
         bool isRecording = await AudioRecorder.isRecording;
         setState(() {
-          _recording =
-              Recording(duration: Duration(hours: 0, minutes: 0, seconds: 0));
+          _recording = Recording(duration: Duration(), path: "");
           _isRecording = isRecording;
         });
       } else {
         Scaffold.of(context).showSnackBar(
-            SnackBar(content: Text("You must accept permissions")));
+            SnackBar(content: Text("Accept microphone permissions")));
       }
     } catch (e) {
       print(e);
     }
   }
 
-  // _start() async {
-  //   try {
-  //     if (await AudioRecorder.hasPermissions) {
-  //       String controller = 'Audio $_counter';
-
-  //       if (controller != null && controller != "") {
-  //         String path = controller;
-
-  //         io.Directory appDocDirectory =
-  //             await getApplicationDocumentsDirectory();
-  //         path = appDocDirectory.path + '/' + controller;
-
-  //         print("Start recording: $path");
-  //         await AudioRecorder.start(
-  //             path: path, audioOutputFormat: AudioOutputFormat.AAC);
-  //       } else {
-  //         await AudioRecorder.start();
-  //       }
-  //       bool isRecording = await AudioRecorder.isRecording;
-  //       setState(() {
-  //         _recording = Recording(duration: Duration(), path: "");
-  //         _isRecording = isRecording;
-  //       });
-  //     } else {
-  //       Scaffold.of(context).showSnackBar(
-  //           SnackBar(content: Text("You must accept permissions")));
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
-
   _stop() async {
-    Recording recording = await AudioRecorder.stop();
-
+    var recording = await AudioRecorder.stop();
     print("Stop recording: ${recording.path}");
-
-    /*String dir = path.dirname(recording.path);
-    String newPath = path.join(dir, 'Record_' + '$_counter');
-    print('NewPath: $newPath');
-     dir.renameSync(newPath);*/
-
     bool isRecording = await AudioRecorder.isRecording;
     File file = widget.localFileSystem.file(recording.path);
     print("  File length: ${await file.length()}");
